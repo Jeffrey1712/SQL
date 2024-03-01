@@ -1,0 +1,92 @@
+SELECT *
+FROM Customers;
+
+SELECT CompanyName, LEN(CompanyName) as CompanyNameLength
+FROM Customers;
+
+SELECT *
+FROM Employees;
+
+SELECT LastName, UPPER(LastName) as UppercaseLastName
+FROM Employees;
+
+SELECT FirstName, LastName, CONCAT(FirstName, ' ', LastName) as FullName
+FROM Employees;
+
+SELECT FirstName, LEFT(LastName, 1) as Initial
+FROM Employees;
+
+SELECT *
+FROM Customers;
+
+SELECT AVG(LEN(CompanyName)) as AvgCompanyNameLength
+FROM Customers;
+
+SELECT *
+FROM Orders;
+
+SELECT OrderDate, YEAR(OrderDate) as OrderYear
+FROM Orders;
+
+SELECT *
+FROM Employees;
+
+SELECT LTRIM(RTRIM(LOWER(FirstName))) as LowercaseFirstName, LTRIM(RTRIM(LOWER(LastName))) as LowercaseLastName
+FROM Employees;
+
+SELECT *
+FROM OrderDetails;
+
+SELECT ROUND(AVG(OrderDetails.UnitPrice * OrderDetails.Quantity * (1 - OrderDetails.Discount)), 2) as AvgOrderValue
+FROM OrderDetails;
+
+SELECT *
+FROM Orders;
+
+SELECT DISTINCT YEAR(OrderDate) as OrderYear, MONTH(OrderDate) as OrderQuarter
+FROM Orders;
+
+SELECT DISTINCT YEAR(OrderDate) as OrderYear, DATEPART(QUARTER, OrderDate) as OrderQuarter
+FROM Orders;
+
+SELECT *
+FROM Employees;
+
+SELECT EmployeeID, CAST(Birthdate AS DATE) as BIRTHDATE, DATEDIFF(YEAR, BirthDate, GETDATE()) as Age
+FROM Employees;
+
+SELECT FirstName, LastName, Title
+FROM Employees
+WHERE Title LIKE '%Manager%';
+
+SELECT *
+FROM Customers;
+
+SELECT Country, COUNT(CustomerID) as NumberOfCustomers
+FROM Customers
+GROUP BY Country
+ORDER BY NumberOfCustomers DESC;
+
+SELECT *
+FROM Orders;
+
+SELECT *
+FROM OrderDetails;
+
+SELECT *
+FROM Products;
+
+SELECT Products.ProductName, COUNT(*) as NumberOfOrders
+FROM Products
+JOIN OrderDetails ON Products.ProductID = OrderDetails.ProductID
+GROUP BY Products.ProductName
+ORDER BY NumberOfOrders DESC;
+
+-- ou 
+
+SELECT Products.ProductName, COUNT(*) as NumberOfOrders
+FROM Orders
+JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
+JOIN Products ON OrderDetails.ProductID = Products.ProductID
+GROUP BY Products.ProductName
+ORDER BY NumberOfOrders DESC;

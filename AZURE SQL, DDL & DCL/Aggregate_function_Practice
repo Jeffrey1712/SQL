@@ -1,0 +1,66 @@
+
+SELECT *
+FROM OrderDetails;
+
+SELECT SUM(OrderDetails.UnitPrice * OrderDetails.Quantity * (1 - OrderDetails.Discount)) as TotalRevenue
+FROM OrderDetails
+
+SELECT OrderID, ROUND(SUM(OrderDetails.UnitPrice * OrderDetails.Quantity * (1 - OrderDetails.Discount)),2) as Revenue_per_Order
+FROM OrderDetails
+GROUP BY OrderID; 
+
+SELECT TOP 5 Products.ProductName, SUM(OrderDetails.Quantity) as TotalQuantitySold
+FROM Products
+JOIN OrderDetails ON Products.ProductID = OrderDetails.ProductID
+GROUP BY Products.ProductName
+ORDER BY TotalQuantitySold DESC;
+
+SELECT COALESCE(c.Country, 'Grand Total') as Country, COALESCE(c.CustomerID, 'Total') as CustomerID, COALESCE(c.CompanyName, 'All Customers') as CompanyName, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) as TotalRevenue
+FROM Customers as c
+JOIN Orders as o ON c.CustomerID = o.CustomerID
+JOIN OrderDetails as od ON o.OrderID = od.OrderID
+GROUP BY ROLLUP (c.Country, c.CustomerID, c.CompanyName);
+
+SELECT e.EmployeeID, e.FirstName, e.LastName, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) as TotalSales
+FROM Employees as e
+JOIN Orders as o ON e.EmployeeID = o.EmployeeID
+JOIN OrderDetails as od ON o.OrderID = od.OrderID
+GROUP BY e.EmployeeID, e.FirstName, e.LastName;
+
+
+SELECT TOP 3 e.EmployeeID, e.FirstName, e.LastName, AVG(od.UnitPrice * od.Quantity * (1 - od.Discount)) as AverageRevenuePerOrder
+FROM Employees as e
+JOIN Orders as o ON e.EmployeeID = o.EmployeeID
+JOIN OrderDetails as od ON o.OrderID = od.OrderID
+GROUP BY e.EmployeeID, e.FirstName, e.LastName
+ORDER BY AverageRevenuePerOrder DESC;
+
+SELECT c.CustomerID, c.CompanyName, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) as TotalSpent
+FROM Customers as c
+JOIN Orders as o ON c.CustomerID = o.CustomerID
+JOIN OrderDetails as od ON o.OrderID = od.OrderID
+GROUP BY c.CustomerID, c.CompanyName;
+
+SELECT *
+FROM OrderDetails;
+
+SELECT *
+FROM Orders;
+
+SELECT *
+FROM Customers;
+
+SELECT TOP 5 c.CustomerID, c.CompanyName, AVG(od.UnitPrice * od.Quantity * (1 - od.Discount)) as AverageSpent
+FROM Customers as c
+JOIN Orders as o ON c.CustomerID = o.CustomerID
+JOIN OrderDetails as od ON o.OrderID = od.OrderID
+GROUP BY c.CustomerID, c.CompanyName
+ORDER BY AverageSpent DESC;
+
+SELECT s.SupplierID, s.CompanyName, COUNT(p.ProductID) as TotalProductsSupplied
+FROM Suppliers as s
+JOIN Products as p ON s.SupplierID = p.SupplierID
+GROUP BY s.SupplierID, s.CompanyName;
+
+SELECT *
+FROM Suppliers as s;
